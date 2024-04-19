@@ -1,0 +1,20 @@
+content_assist_favorite_static_members=org.assertj.core.api.Assertions.*;org.mockito.Matchers.*;org.mockito.Mockito.*;org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.*;org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;org.springframework.test.web.client.match.MockRestRequestMatchers.*;org.springframework.test.web.client.response.MockRestResponseCreators.*;org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;org.hamcrest.CoreMatchers.*;org.junit.Assert.*
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="java.time.temporal.Temporal"><rhs name\="java.time.LocalDate"/></lhs><lhs name\="java.time.temporal.TemporalAccessor"><rhs name\="java.time.LocalDate"/></lhs><lhs name\="java.time.temporal.TemporalAdjuster"><rhs name\="java.time.LocalDate"/></lhs><lhs name\="java.time.chrono.ChronoLocalDate"><rhs name\="java.time.LocalDate"/></lhs><lhs name\="org.springframework.http.HttpStatusCode"><rhs name\="org.springframework.http.HttpStatus"/></lhs><lhs name\="java.lang.Enum"><rhs name\="org.springframework.http.HttpStatus"/><rhs name\="jakarta.persistence.FetchType"/><rhs name\="java.util.concurrent.TimeUnit"/><rhs name\="org.redisson.api.LocalCachedMapOptions$SyncStrategy"/><rhs name\="org.redisson.api.LocalCachedMapOptions$ReconnectionStrategy"/></lhs><lhs name\="java.lang.constant.Constable"><rhs name\="org.springframework.http.HttpStatus"/><rhs name\="jakarta.persistence.FetchType"/><rhs name\="java.util.concurrent.TimeUnit"/><rhs name\="org.redisson.api.LocalCachedMapOptions$SyncStrategy"/><rhs name\="org.redisson.api.LocalCachedMapOptions$ReconnectionStrategy"/></lhs><lhs name\="java.lang.Number"><rhs name\="java.math.BigDecimal"/></lhs><lhs name\="java.math.BigDecimal"><rhs name\="java.math.BigDecimal"/></lhs><lhs name\="java.time.temporal.TemporalAmount"><rhs name\="java.time.Duration"/></lhs><lhs name\="io.github.resilience4j.circuitbreaker.CircuitBreakerConfig"><rhs name\="io.github.resilience4j.circuitbreaker.CircuitBreakerConfig"/></lhs><lhs name\="org.redisson.api.RedissonClient"><rhs name\="org.redisson.Redisson"/></lhs><lhs name\="org.redisson.client.codec.Codec"><rhs name\="org.redisson.client.codec.IntegerCodec"/><rhs name\="org.redisson.client.codec.StringCodec"/></lhs></history>
+content_assist_number_of_computers=17
+eclipse.preferences.version=1
+editor_folding_enabled=false
+org.eclipse.jdt.ui.formatterprofiles.version=23
+spelling_ignore_ampersand_in_properties=true
+spelling_ignore_digits=true
+spelling_ignore_java_strings=true
+spelling_ignore_mixed=true
+spelling_ignore_non_letters=true
+spelling_ignore_sentence=true
+spelling_ignore_single_letters=true
+spelling_ignore_upper=true
+spelling_ignore_urls=true
+spelling_locale_initialized=true
+spelling_user_dictionary_encoding=windows-1252
+typefilter_migrated_2=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

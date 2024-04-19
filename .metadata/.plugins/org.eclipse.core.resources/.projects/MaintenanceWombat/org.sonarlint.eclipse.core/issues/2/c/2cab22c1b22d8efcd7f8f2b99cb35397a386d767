@@ -1,0 +1,5 @@
+
+}
+java:S6813"BRemove this field injection and use constructor injection instead.8Ö¿‰°ï1b 0132ec8cee01c5dd244e1a60fe6448a1h
+ˆ
+java:S3305"MInject this field value directly into "client", the only method that uses it.8Ö¿‰°ï1b ff035a1dd7655da15295fa5fa89362a7h

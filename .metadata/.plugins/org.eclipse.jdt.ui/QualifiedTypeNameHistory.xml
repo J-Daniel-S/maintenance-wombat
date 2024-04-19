@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.springframework.web.reactive.socket.WebSocketMessage"/>
+    <fullyQualifiedTypeName name="org.redisson.client.codec.StringCodec"/>
+    <fullyQualifiedTypeName name="java.util.Objects"/>
+    <fullyQualifiedTypeName name="org.redisson.config.Config"/>
+    <fullyQualifiedTypeName name="org.redisson.Redisson"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+</qualifiedTypeNameHistroy>
