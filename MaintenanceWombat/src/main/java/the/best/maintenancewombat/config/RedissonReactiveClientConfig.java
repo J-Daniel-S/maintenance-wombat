@@ -26,6 +26,7 @@ public class RedissonReactiveClientConfig {
 			config.useSingleServer()
 				.setAddress(env.getProperty("redis.address"));
 			client = Redisson.create(config).reactive();
+			
 		}
 		
 		return client;

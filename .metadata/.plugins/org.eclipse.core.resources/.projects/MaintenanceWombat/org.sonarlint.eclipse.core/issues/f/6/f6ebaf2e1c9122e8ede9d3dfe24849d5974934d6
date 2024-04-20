@@ -1,7 +1,18 @@
 
+e	java:S106C"+Replace this use of System.out by a logger.8îΩÄ∞Ô1b bb1c3f2ea781263d3a2bb92b06a2061fh
+e	java:S106D"+Replace this use of System.out by a logger.8îΩÄ∞Ô1b bb1c3f2ea781263d3a2bb92b06a2061fh
 }
-java:S6813"BRemove this field injection and use constructor injection instead.8îΩÄ∞Ô1b 0132ec8cee01c5dd244e1a60fe6448a1h
-e	java:S106&"+Replace this use of System.out by a logger.8îΩÄ∞Ô1b bb1c3f2ea781263d3a2bb92b06a2061fh
-e	java:S106'"+Replace this use of System.out by a logger.8îΩÄ∞Ô1b bb1c3f2ea781263d3a2bb92b06a2061fh
-e	java:S106-"+Replace this use of System.out by a logger.8îΩÄ∞Ô1b bb1c3f2ea781263d3a2bb92b06a2061fh
-e	java:S106."+Replace this use of System.out by a logger.8îΩÄ∞Ô1b bb1c3f2ea781263d3a2bb92b06a2061fh
+java:S6813$"BRemove this field injection and use constructor injection instead.8îΩÄ∞Ô1b 0132ec8cee01c5dd244e1a60fe6448a1h
+Å
+java:S1192)"FDefine a constant instead of duplicating this literal "tasks" 5 times.8èèÄ–Ô1b 645bdaec64e8e5208d1e1e365928c4ffh
+s
+java:S18544"8Remove this useless assignment to local variable "list".8ÀÃ÷◊Ô1b 8224a5943f32be868378bf08b90eba45h
+t
+java:S18543"9Remove this useless assignment to local variable "topic".8ÀÃ÷◊Ô1b 45304c5b23e33920927d3046fe2149dbh
+e
+java:S14813"*Remove this unused "topic" local variable.8ÀÃ÷◊Ô1b 9d9b68ac2b1de18d3712096354b3c3a5h
+d
+java:S14814")Remove this unused "list" local variable.8ÀÃ÷◊Ô1b 10ae9fc7d453b0dd525d0edf2ede7961h
+e	java:S106Q"+Replace this use of System.out by a logger.8ØßÇÿÔ1b bb1c3f2ea781263d3a2bb92b06a2061fh
+e	java:S106Z"+Replace this use of System.out by a logger.8ØßÇÿÔ1b bb1c3f2ea781263d3a2bb92b06a2061fh
+e	java:S106c"+Replace this use of System.out by a logger.8ØßÇÿÔ1b bb1c3f2ea781263d3a2bb92b06a2061fh

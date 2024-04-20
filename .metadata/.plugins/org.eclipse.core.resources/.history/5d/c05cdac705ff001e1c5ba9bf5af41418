@@ -1,0 +1,45 @@
+package the.best.maintenancewombat.config;
+
+import java.io.IOException;
+
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
+import the.best.maintenancewombat.documents.branches.Priority;
+
+@Configuration
+public class MaintenanceServiceConfig {
+	
+	// required to recognize improperly upper cased enum strings
+
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+		return builder -> builder.serializationInclusion(JsonInclude.Include.NON_NULL)
+				.deserializers(new PriorityDeserializer());
+	} 
+	
+}
+
+class PriorityDeserializer extends StdDeserializer<Priority> {
+	
+	public PriorityDeserializer() {
+		this(null);
+	}
+	
+	public PriorityDeserializer(Class<?> c) {
+		super(c);
+	}
+	
+	@Override
+	public Priority deserialize(JsonParser p, DeserializationContext ctxt) throws IOException{
+		String prioStr = p.getValueAsString();
+		return Priority.valueOf(prioStr.toUpperCase());
+	}
+	
+}

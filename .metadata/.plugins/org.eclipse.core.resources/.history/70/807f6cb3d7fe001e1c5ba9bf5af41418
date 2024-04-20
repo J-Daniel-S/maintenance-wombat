@@ -1,0 +1,17 @@
+package the.best.maintenancewombat.documents;
+
+public class Change {
+	
+	Task task;
+	ChangeType type;
+	
+	public Change(Task task, ChangeType type) {
+		this.task = task;
+		this.type = type;
+	}
+
+}
+
+enum ChangeType {
+	ADD, DELETE, UPDATE;
+}

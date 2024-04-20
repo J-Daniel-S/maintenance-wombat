@@ -6,4 +6,12 @@
     <fullyQualifiedTypeName name="org.redisson.config.Config"/>
     <fullyQualifiedTypeName name="org.redisson.Redisson"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.Task"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.ChangeType"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonInclude"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonInclude.Include"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Priority"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.config.utils.PriorityDeserializer"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.json.JsonMapper"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.MapperFeature"/>
 </qualifiedTypeNameHistroy>
