@@ -1,0 +1,5 @@
+package the.best.maintenancewombat.services.utils;
+
+public class InvalidModifierException extends Throwable {
+
+}
