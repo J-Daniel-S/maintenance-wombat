@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import the.best.maintenancewombat.documents.Change;
+import the.best.maintenancewombat.documents.MaintenanceRequest;
 import the.best.maintenancewombat.documents.Task;
 import the.best.maintenancewombat.services.utils.InvalidModifierException;
 
@@ -44,6 +44,27 @@ public class MaintenanceService implements WebSocketHandler {
 		client.getMap("tasks")
 			.fastPut("init_key", "init_value")
 			.subscribe();
+		client.getMap("SAN_ANTONIO")
+			.fastPut("init_key", "init_value")
+			.subscribe();
+		client.getMap("FORT_WORTH")
+			.fastPut("init_key", "init_value")
+			.subscribe();
+		client.getMap("ABILENE")
+			.fastPut("init_key", "init_value")
+			.subscribe();
+		client.getMap("LUBBOCK")
+			.fastPut("init_key", "init_value")
+			.subscribe();
+		client.getMap("AMARILLO")
+			.fastPut("init_key", "init_value")
+			.subscribe();
+		client.getMap("MCALLEN")
+			.fastPut("init_key", "init_value")
+			.subscribe();
+		client.getMap("SUGARLAND")
+			.fastPut("init_key", "init_value")
+			.subscribe();
 	}
 	
 	public void newLocation(String location) {
@@ -58,9 +79,9 @@ public class MaintenanceService implements WebSocketHandler {
 		return session.receive()
 			.map(WebSocketMessage::getPayloadAsText)
 			.flatMap(msg -> {
-				Change change;
+				MaintenanceRequest change;
 				try {
-					change = mapper.readValue(msg, Change.class);
+					change = mapper.readValue(msg, MaintenanceRequest.class);
 					return handleTaskChange(change, session)
 							.then(session.send(Flux.just(session.textMessage(msg))));
 				} catch (JsonProcessingException e) {
@@ -74,27 +95,45 @@ public class MaintenanceService implements WebSocketHandler {
 		
 	}
 	
-	private Mono<Void> handleTaskChange(Change change, WebSocketSession session) throws JsonProcessingException {
-	    String taskKey = change.getTask().getName();
+	private Mono<Void> handleTaskChange(MaintenanceRequest type, WebSocketSession session) throws JsonProcessingException {
+	    String taskKey = type.getTask().getName();
+	    String location = type.getTask().getLocation().toString();
 	    
-	    	switch (change.getType()) {
+	    	switch (type.getType()) {
 	    	case DELETE:
-	    		return client.getMap("tasks")
+	    		return client.getMap(location)
 	    				.remove(taskKey)
 	    				.then(Mono.fromRunnable(() -> {
 	    					tasks.remove(taskKey);
 	    					sendUpdatedTaskList(session);
-	    					System.out.println(change.getTask() + " deleted");
+//	    					System.out.println(change.getTask() + " deleted");
 	    				}));
 	    		
 	    	case ADDORUPDATE:
-	    		return client.getMap("tasks")
-	    				.put(taskKey, new ObjectMapper().writeValueAsString(change.getTask()))
+	    		return client.getMap(location)
+	    				.put(taskKey, new ObjectMapper().writeValueAsString(type.getTask()))
 	    				.then(Mono.fromRunnable(() -> {
-	    					tasks.put(taskKey, change.getTask());
+	    					tasks.put(taskKey, type.getTask());
 	    					sendUpdatedTaskList(session);
-	    					System.out.println(change.getTask() + " added || updated");
+//	    					System.out.println(change.getTask() + " added || updated");
 	    				}));
+
+	    	case GETALL:
+	    		return client.getMap(location).readAllMap()
+	    				.then(Mono.fromRunnable(() -> {
+	    					sendUpdatedTaskList(session);
+//	    					System.out.println(change.getTask() + " added || updated");
+	    				}));
+
+	    	case GETLOCATION:
+	    		// TODO: implement
+//	    		return client.getMap(location)
+//	    				.put(taskKey, new ObjectMapper().writeValueAsString(type.getTask()))
+//	    				.then(Mono.fromRunnable(() -> {
+//	    					tasks.put(taskKey, type.getTask());
+//	    					sendUpdatedTaskList(session);
+////	    					System.out.println(change.getTask() + " added || updated");
+//	    				}));
 	    		
 	    	default:
 	    		return Mono.error(new InvalidModifierException("Value change type not properly specified:  aceeptable values: 'delete' or 'addorupdate'"));

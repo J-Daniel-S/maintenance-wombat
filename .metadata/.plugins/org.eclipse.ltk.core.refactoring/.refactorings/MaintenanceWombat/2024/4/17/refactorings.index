@@ -1,3 +1,8 @@
 1713677154648	Rename compilation unit 'PriorityDeserializer.java'
 1713678015287	Rename local variable 'prio'
 1713678060903	Rename local variable 'prio'
+1713690167388	Rename type 'Change'
+1713690199514	Rename local variable 'change'
+1713690237037	Rename type 'RequestType'
+1713690250960	Rename type 'ChangeType'
+1713690272431	Rename type 'ChangeTypeDeserializer'
