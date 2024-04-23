@@ -1,17 +1,20 @@
 
-e	java:S106\"+Replace this use of System.out by a logger.8”½€°ï1b bb1c3f2ea781263d3a2bb92b06a2061fh
-e	java:S106]"+Replace this use of System.out by a logger.8¯§‚Øï1b bb1c3f2ea781263d3a2bb92b06a2061fh
-}
-java:S6813#"BRemove this field injection and use constructor injection instead.8”½€°ï1b 0132ec8cee01c5dd244e1a60fe6448a1h
-v	java:S125m"<This block of commented-out lines of code should be removed.8Êû³þï1b 93fa40233e141be22489834078456803h
-v	java:S125v"<This block of commented-out lines of code should be removed.8Êû³þï1b 42c7d2d655811d5b368de73572254cdch
-„
-java:S1192-"IDefine a constant instead of duplicating this literal "init_key" 9 times.8ÃÐöþï1b 723342dabe827f95a04e7e08ced892f9h
+w	java:S125•"<This block of commented-out lines of code should be removed.8Êû³þï1b 93fa40233e141be22489834078456803h
+w	java:S125¥"<This block of commented-out lines of code should be removed.8ªÄ™€ð1b 9d2ec7c75e65d2ef1ababd606c163eaah
+w	java:S125¬"<This block of commented-out lines of code should be removed.8ªÄ™€ð1b 78b888847e4e2fccedd335eac71cabf5h
+f	java:S106…"+Replace this use of System.out by a logger.8”½€°ï1b bb1c3f2ea781263d3a2bb92b06a2061fh
 †
-java:S1192-"KDefine a constant instead of duplicating this literal "init_value" 9 times.8ÃÐöþï1b c2ba9b32b7fadd9e531663a86d9a2cbdh
-g
-java:S1602{",Remove useless curly braces around statement8ªÄ™€ð1b f95b70fdc3088560732a5ac135644506h
-v	java:S125}"<This block of commented-out lines of code should be removed.8ªÄ™€ð1b 42c7d2d655811d5b368de73572254cdch
-w	java:S125„"<This block of commented-out lines of code should be removed.8ªÄ™€ð1b f3887a2d03bc5e3941bc28bc647a93a3h
-n
-java:S1135"2Complete the task associated to this TODO comment.8ªÄ™€ð1b 997088413352a97585c48a0d90860d0dh
+java:S1192A"KDefine a constant instead of duplicating this literal "init_value" 8 times.8ÃÐöþï1b c2ba9b32b7fadd9e531663a86d9a2cbdh
+„
+java:S1192A"IDefine a constant instead of duplicating this literal "init_key" 8 times.8ÃÐöþï1b 723342dabe827f95a04e7e08ced892f9h
+}
+java:S6813$"BRemove this field injection and use constructor injection instead.8”½€°ï1b 0132ec8cee01c5dd244e1a60fe6448a1h
+w	java:S125ž"<This block of commented-out lines of code should be removed.8Êû³þï1b 42c7d2d655811d5b368de73572254cdch
+h
+java:S1602£",Remove useless curly braces around statement8ªÄ™€ð1b f95b70fdc3088560732a5ac135644506h
+f	java:S106„"+Replace this use of System.out by a logger.8¯§‚Øï1b bb1c3f2ea781263d3a2bb92b06a2061fh
+h
+java:S1602ª",Remove useless curly braces around statement8®¿»Íð1b f95b70fdc3088560732a5ac135644506h
+v	java:S125?"<This block of commented-out lines of code should be removed.8´áùÎð1b 8bc0ef2b41e0ba2834c194e51ea9bbech
+‹
+java:S1128"PRemove this unused import 'com.fasterxml.jackson.databind.JsonMappingException'.8êÀÆÔð1b c601a65b47c5d48c3a964fe619976735h

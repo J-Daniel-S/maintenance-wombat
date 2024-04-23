@@ -7,12 +7,8 @@ y
 Isrc/main/java/the/best/maintenancewombat/documents/branches/Priority.java,3\c\3c1b121290f6e2930ed6b4cfe43886f8ccbe53b3
 l
 <src/main/java/the/best/maintenancewombat/documents/Task.java,e\1\e1d549fffe7e1657398af7e85e71ab7ce49ee15e
-{
-Ksrc/main/java/the/best/maintenancewombat/documents/branches/ChangeType.java,0\9\09764cd5098b4a0dd65bb6586f836e8de8261dac
 y
 Isrc/main/java/the/best/maintenancewombat/documents/branches/Category.java,0\a\0aab302c45bb7bebf1e7996e99791ea32d653488
-n
->src/main/java/the/best/maintenancewombat/documents/Change.java,c\4\c4976dacf21627018a69da6f9e6a5bdeffc0a6fd
 Y
 )src/main/resources/application.properties,0\6\06f65155ec73600b9fc5c4dc2883d4bb84d8e284
 y
@@ -25,8 +21,6 @@ Lsrc/main/java/the/best/maintenancewombat/config/MaintenanceSocketConfig.java,5
 Rsrc/main/java/the/best/maintenancewombat/config/utils/RequestTypeDeserializer.java,3\5\35848092db909db67a4ccf2d928c31dec774defa
 z
 Jsrc/main/java/the/best/maintenancewombat/documents/MaintenanceRequest.java,3\7\37c2171ab577d19f7a7651c7d301e22c4ee2bce2
-Å
-Qsrc/main/java/the/best/maintenancewombat/config/utils/CustumEnumDeserializer.java,8\7\8753099590075a685a03ceddc012c28ccc0d0097
 
 Osrc/main/java/the/best/maintenancewombat/config/utils/LocationDeserializer.java,b\0\b079ae5b6821668e9f52d86ed2b3a6aa99172210
 Ö
@@ -37,5 +31,3 @@ Lsrc/main/java/the/best/maintenancewombat/documents/branches/RequestType.java,2
 Osrc/main/java/the/best/maintenancewombat/config/utils/CategoryDeserializer.java,0\c\0c80b4935cfd6a15af9d2811b1916adbc9fdbd63
 y
 Isrc/main/java/the/best/maintenancewombat/documents/branches/Location.java,c\1\c138d7c49e969695db2d1385f3b90d091b157725
-Å
-Qsrc/main/java/the/best/maintenancewombat/config/utils/ChangeTypeDeserializer.java,d\d\ddffa1d02d28b5b331e92769bf32993c3dd92cf6
