@@ -21,6 +21,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import the.best.maintenancewombat.documents.MaintenanceRequest;
 import the.best.maintenancewombat.documents.Task;
+import the.best.maintenancewombat.documents.branches.Category;
+import the.best.maintenancewombat.documents.branches.Location;
+import the.best.maintenancewombat.documents.branches.Priority;
 import the.best.maintenancewombat.services.utils.InvalidModifierException;
 
 @Service
@@ -43,62 +46,48 @@ public class MaintenanceService implements WebSocketHandler {
 	@PostConstruct
 	private void initTasksHash() {
 		
-		String task1String = "{\"name\":\"Clean gutters\",\"prio\":\"MEDIUM\",\"location\":\"ABILENE\",\"kind\":\"CLEANUP\"}";
-		String task2String = "{\"name\":\"Replace light bulbs\",\"prio\":\"HIGH\",\"location\":\"SUGARLAND\",\"kind\":\"ELECTRICAL\"}";
-		String task3String = "{\"name\":\"Unclog sink\",\"prio\":\"LOW\",\"location\":\"MCALLEN\",\"kind\":\"PLUMBING\"}";
-		String task4String = "{\"name\":\"Install new network switch\",\"prio\":\"HIGH\",\"location\":\"FORT_WORTH\",\"kind\":\"IT\"}";
-		String task5String = "{\"name\":\"Paint office walls\",\"prio\":\"MEDIUM\",\"location\":\"LUBBOCK\",\"kind\":\"PAINT\"}";
-		String task6String = "{\"name\":\"Clean oil spill\",\"prio\":\"HIGH\",\"location\":\"SAN_ANTONIO\",\"kind\":\"CLEANUP\"}";
+		Task task1 = new Task("Clean gutters", Priority.LOW, Category.CLEANUP, Location.ABILENE);
+		Task task2 = new Task("Replace light bulbs", Priority.HIGH, Category.ELECTRICAL, Location.SUGARLAND);
+		Task task3 = new Task("Unclog sink", Priority.LOW, Category.PLUMBING, Location.MCALLEN);
+		Task task4 = new Task("Install new network switch", Priority.HIGH, Category.IT, Location.FORT_WORTH);
+		Task task5 = new Task("Paint office walls", Priority.MEDIUM, Category.STRUCTURAL, Location.LUBBOCK);
+		Task task6 = new Task("Clean oil spill", Priority.HIGH, Category.CLEANUP, Location.SAN_ANTONIO);
 		
 		try {
-			Task task1 = mapper.readValue(task1String, Task.class);
-			Task task2 = mapper.readValue(task2String, Task.class);
-			Task task3 = mapper.readValue(task3String, Task.class);
-			Task task4 = mapper.readValue(task4String, Task.class);
-			Task task5 = mapper.readValue(task5String, Task.class);
-			Task task6 = mapper.readValue(task6String, Task.class);
-			// LIKELY UNNECESSARY
-//			client.getMap("tasks")
-//				.fastPut("init_key", "init_value")
-//				.subscribe();
-			client.getMap("SAN_ANTONIO")
-				.put("init_key", "init_value")
-				.subscribe();
-			client.getMap("FORT_WORTH")
-				.fastPut("init_key", "init_value")
-				.subscribe();
 			client.getMap("ABILENE")
-				.fastPut("init_key", "init_value")
-				.subscribe();
-			client.getMap("LUBBOCK")
-				.fastPut("init_key", "init_value")
-				.subscribe();
-			client.getMap("AMARILLO")
-				.fastPut("init_key", "init_value")
+				.fastPut(task1.getName(), task1)
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task1.getName(), task1);
+				})).subscribe();
+			client.getMap("SUGARLAND")
+				.fastPut(task2.getName(), mapper.writeValueAsString(task2))
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task2.getName(), task2);
+				}))
 				.subscribe();
 			client.getMap("MCALLEN")
-				.fastPut("init_key", "init_value")
-				.subscribe();
-			client.getMap("SUGARLAND")
-				.fastPut("init_key", "init_value")
-				.subscribe();
-			client.getMap("MCALLEN")
-				.fastPut("Unclog sink", task3)
-				.subscribe();
-			client.getMap("SUGARLAND")
-				.fastPut("Replace light bulbs", task2)
-				.subscribe();
-			client.getMap("SAN_ANTONIO")
-				.put("Clean oil spill", task6)
+				.put(task3.getName(), task3)
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task3.getName(), task3);
+				}))
 				.subscribe();
 			client.getMap("FORT_WORTH")
-				.fastPut("Install new network switch", task4)
+				.fastPut(task4.getName(), task4)
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task4.getName(), task4);
+				}))
 				.subscribe();
 			client.getMap("LUBBOCK")
-				.fastPut("Paint office walls", task5)
+				.fastPut(task5.getName(), task5)
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task5.getName(), task5);
+				}))
 				.subscribe();
-			client.getMap("ABILENE")
-				.fastPut("Replace light bulbs", task1)
+			client.getMap("SAN_ANTONIO")
+				.fastPut(task6.getName(), mapper.writeValueAsString(task6))
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task6.getName(), task6);
+				}))
 				.subscribe();
 		
 		} catch (JsonProcessingException e) {
@@ -136,6 +125,9 @@ public class MaintenanceService implements WebSocketHandler {
 	}
 	
 	private Mono<Void> handleTaskChange(MaintenanceRequest type, WebSocketSession session) throws JsonProcessingException {
+		
+		//probably better to do a null check here...  currently will get an empty task from the front end
+		
 	    String taskKey = type.getTask().getName();
 	    String location = type.getTask().getLocation().toString();
 	    

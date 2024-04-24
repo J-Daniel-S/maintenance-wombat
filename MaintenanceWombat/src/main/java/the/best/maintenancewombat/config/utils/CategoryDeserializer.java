@@ -14,7 +14,7 @@ public class CategoryDeserializer extends JsonDeserializer<Category> {
 	@Override
 	public Category deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JacksonException {
 		String catStr = parser.getValueAsString();
-		return Category.fromString(catStr);
+		return !catStr.equals("") ? Category.fromString(catStr) : Category.OTHER;
 	}
 
 }

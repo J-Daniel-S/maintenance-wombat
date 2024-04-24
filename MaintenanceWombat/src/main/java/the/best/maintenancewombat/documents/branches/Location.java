@@ -13,5 +13,5 @@ public enum Location {
 		}
 		throw new IllegalArgumentException("Invalid enum value: " + value);
 	}
-
+	
 }

@@ -10,11 +10,11 @@
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.ChangeType"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonInclude"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonInclude.Include"/>
-    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Priority"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.config.utils.PriorityDeserializer"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.json.JsonMapper"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.MapperFeature"/>
     <fullyQualifiedTypeName name="jakarta.annotation.Priority"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Priority"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Category"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Location"/>
 </qualifiedTypeNameHistroy>

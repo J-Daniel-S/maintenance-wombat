@@ -14,7 +14,8 @@ public class LocationDeserializer extends JsonDeserializer<Location> {
 	@Override
 	public Location deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JacksonException {
 		String locStr = parser.getValueAsString().replace(' ', '_');
-		return Location.fromString(locStr);
+		// Location value will not be used, false case doesn't matter
+		return !locStr.equals("") ? Location.fromString(locStr) : Location.SAN_ANTONIO;
 	}
 
 }

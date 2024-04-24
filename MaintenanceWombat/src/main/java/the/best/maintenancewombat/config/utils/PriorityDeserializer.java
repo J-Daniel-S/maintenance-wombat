@@ -13,7 +13,7 @@ public class PriorityDeserializer extends JsonDeserializer<Priority> {
 	@Override
 	public Priority deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException{
 		String prioStr = parser.getValueAsString();
-		return Priority.fromString(prioStr);
+		return !prioStr.equals("") ? Priority.fromString(prioStr) : Priority.LOW;
 	}
 	
 }
