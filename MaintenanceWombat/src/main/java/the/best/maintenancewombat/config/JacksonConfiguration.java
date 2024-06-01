@@ -11,10 +11,13 @@ import the.best.maintenancewombat.config.utils.CategoryDeserializer;
 import the.best.maintenancewombat.config.utils.RequestTypeDeserializer;
 import the.best.maintenancewombat.config.utils.LocationDeserializer;
 import the.best.maintenancewombat.config.utils.PriorityDeserializer;
+import the.best.maintenancewombat.config.utils.UserTypeDeserializer;
 import the.best.maintenancewombat.documents.branches.Category;
 import the.best.maintenancewombat.documents.branches.RequestType;
+import the.best.maintenancewombat.documents.branches.UserType;
 import the.best.maintenancewombat.documents.branches.Location;
 import the.best.maintenancewombat.documents.branches.Priority;
+
 
 @Configuration
 public class JacksonConfiguration {
@@ -27,6 +30,7 @@ public class JacksonConfiguration {
 		module.addDeserializer(Category.class, new CategoryDeserializer());
 		module.addDeserializer(RequestType.class, new RequestTypeDeserializer());
 		module.addDeserializer(Location.class, new LocationDeserializer());
+		module.addDeserializer(UserType.class, new UserTypeDeserializer());
 		mapper.registerModule(module);
 		return mapper;
 	}

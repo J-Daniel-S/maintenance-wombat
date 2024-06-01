@@ -18,7 +18,7 @@ public class MaintenanceSocketConfig {
 	private MaintenanceService mServ;
 	
 	@Bean
-	public HandlerMapping handlerMapping() {
+	public HandlerMapping maintenanceHandlerMapping() {
 		Map<String, WebSocketHandler> map = Map.of(
 				"/maintenance-wombat", mServ
 				);

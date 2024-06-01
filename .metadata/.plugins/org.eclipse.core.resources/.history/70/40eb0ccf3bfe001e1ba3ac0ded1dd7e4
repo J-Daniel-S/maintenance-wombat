@@ -1,5 +1,0 @@
-package the.best.maintenancewombat.config;
-
-public class RedissonReactiveClientConfig {
-
-}

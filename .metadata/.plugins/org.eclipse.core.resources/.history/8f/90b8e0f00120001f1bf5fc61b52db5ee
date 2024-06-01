@@ -1,0 +1,9 @@
+package the.best.maintenancewombat.services.utils;
+
+public class UserNotFoundException extends Exception {
+	
+	UserNotFoundException(String name) {
+		super(name + " not found");
+	}
+
+}

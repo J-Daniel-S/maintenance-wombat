@@ -1,0 +1,20 @@
+package the.best.maintenancewombat.config.utils;
+
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+
+import the.best.maintenancewombat.documents.User;
+
+public class UserTypeDeserializer extends JsonDeserializer<User> {
+
+	@Override
+	public UserType deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JacksonException {
+		String uString = parser.getValueAsString();
+		return !uString.equals("") ? User.;
+	}
+
+}

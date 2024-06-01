@@ -39,7 +39,11 @@ public class Task {
 	}
 	
 	public String getName() {
-		return name;
+		if (this.name != null) {
+			return name;
+		} else {
+			return "unnamed";
+		}
 	}
 
 	public void setName(String name) {

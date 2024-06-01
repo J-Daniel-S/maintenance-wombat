@@ -13,7 +13,6 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
@@ -28,10 +27,6 @@ import the.best.maintenancewombat.services.utils.InvalidModifierException;
 
 @Service
 public class MaintenanceService implements WebSocketHandler {
-	
-	/*
-	 * NEED TO FIGURE OUT REACT FRONT END HERE
-	 */
 	
 	private final ObjectMapper mapper;
     private Map<String, Task> tasks = new ConcurrentHashMap<>();
@@ -95,12 +90,6 @@ public class MaintenanceService implements WebSocketHandler {
 		}
 		
 	}
-	
-	public void newLocation(String location) {
-		client.getMap(location)
-			.fastPut("init_key", "init_value")
-			.subscribe();
-	}
 
 	@Override
 	public Mono<Void> handle(WebSocketSession session) {
@@ -156,7 +145,7 @@ public class MaintenanceService implements WebSocketHandler {
 	    					sendUpdatedTaskList(session);
 //	    					System.out.println("Get all tasks in all locations");
 	    				}));
-
+	    		// may deal with this on front end
 	    	case GETLOCATION:
 	    		return client.getMap(location).readAllMap()
 	    				.then(Mono.fromRunnable(() -> {
