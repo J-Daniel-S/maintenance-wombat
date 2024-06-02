@@ -8,9 +8,7 @@ public class User {
 	private UserType userType;
 	
 	public User() {
-		this.name = "default";
-		this.password = "default";
-		this.userType = UserType.STANDARD;
+
 	}
 	
 	public User(String name) {

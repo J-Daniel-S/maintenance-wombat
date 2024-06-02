@@ -1,0 +1,117 @@
+package the.best.maintenancewombat.services;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.redisson.api.RedissonReactiveClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.socket.WebSocketHandler;
+import org.springframework.web.reactive.socket.WebSocketMessage;
+import org.springframework.web.reactive.socket.WebSocketSession;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.annotation.PostConstruct;
+import reactor.core.publisher.Mono;
+import the.best.maintenancewombat.documents.User;
+import the.best.maintenancewombat.documents.UserRequest;
+import the.best.maintenancewombat.documents.UserResponse;
+import the.best.maintenancewombat.documents.branches.UserType;
+
+@Service
+public class UserService implements WebSocketHandler {
+
+	private final ObjectMapper mapper;
+	private Map<String, User> users = new ConcurrentHashMap<>();
+	private static final String USER_MAP = "users";
+	
+	public UserService(@Autowired ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	@Autowired
+	private RedissonReactiveClient client;
+
+	@PostConstruct
+	public void initUserHash() {
+		User user1 = new User("KEVIN");
+		User user2 = new User("TIMMY", "default", UserType.MAINTENANCE);
+
+		client.getMap(USER_MAP)
+			.fastPut(user1.getName(), user1)
+			.then(Mono.fromRunnable(() -> {
+				users.put(user1.getName(), user1);
+			})).subscribe();
+		client.getMap("users")
+			.fastPut(user2.getName(), user2)
+			.then(Mono.fromRunnable(() -> {
+				users.put(user2.getName(), user2);
+			})).subscribe();
+
+	}
+
+	@Override
+	public Mono<Void> handle(WebSocketSession session) {
+	    return session.receive()
+	            .map(WebSocketMessage::getPayloadAsText)
+	            .flatMap(msg -> {
+	                UserRequest user;
+	                try {
+	                    user = mapper.readValue(msg, UserRequest.class);
+	                    Mono<Object> userMono = client.getMap(USER_MAP).get(user.getName().toUpperCase());
+	                    // TODO: add real password check.  Spring security if you get bored
+	                    return userMono
+	                    		.hasElement()
+	                    		.flatMap(hasElement -> {
+	                    			if (hasElement) {
+	                    				return handleFoundUser(userMono, user.getPassword(), session);
+	                    			} else {
+	                    				return handleNoUser(session);
+	                    			}
+	                    		});
+	                } catch (JsonMappingException e) {
+	                    e.printStackTrace();
+	                    return session.send(Mono.error(e));
+	                } catch (JsonProcessingException e) {
+	                    e.printStackTrace();
+	                    return session.send(Mono.error(e));
+	                }
+	            })
+	            .doOnError(e -> {
+	            		System.out.println("Error occurred: " + e.getMessage());
+	            		session.send(Mono.just(session.textMessage("Websocket server failure:\n" + e.getMessage())));
+	            	})
+	            .doFinally(s -> System.out.println("Subscriber finally " + s))
+	            .then();
+	}
+	
+	private Mono<Void> handleNoUser(WebSocketSession session) {
+		try {
+			return session.send(Mono.just(session.textMessage(new ObjectMapper().writeValueAsString(new UserResponse()))));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return session.send(Mono.error(e));
+		}
+	}
+
+	private Mono<Void> handleFoundUser(Mono<Object> user, String password, WebSocketSession session) {
+		 return user.flatMap(found -> {
+                        try {
+                            String responseString = new ObjectMapper().writeValueAsString(new UserResponse((User) found));
+                            User compare = mapper.readValue(responseString, User.class);
+                            if (compare.getPassword().equals(password))
+                            	return session.send(Mono.just(session.textMessage(responseString)));
+                            return session.send(Mono.just(session.textMessage(new ObjectMapper()
+                            		.writeValueAsString(new UserResponse("Incorrect password for " + compare.getName())))));
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                            return session.send(Mono.error(e));
+                        }
+                });
+		
+	}
+
+}

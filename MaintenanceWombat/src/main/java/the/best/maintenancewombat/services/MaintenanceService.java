@@ -3,6 +3,7 @@ package the.best.maintenancewombat.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.redisson.api.RedissonReactiveClient;
@@ -118,7 +119,7 @@ public class MaintenanceService implements WebSocketHandler {
 		//probably better to do a null check here...  currently will get an empty task from the front end
 		
 	    String taskKey = type.getTask().getName();
-	    String location = type.getTask().getLocation().toString();
+	    String location = type.getLocation().toString();
 	    
 	    	switch (type.getType()) {
 	    	case DELETE:
@@ -129,7 +130,6 @@ public class MaintenanceService implements WebSocketHandler {
 	    					sendUpdatedTaskList(session);
 //	    					System.out.println(change.getTask() + " deleted");
 	    				}));
-	    		
 	    	case ADDORUPDATE:
 	    		return client.getMap(location)
 	    				.put(taskKey, new ObjectMapper().writeValueAsString(type.getTask()))
@@ -138,23 +138,23 @@ public class MaintenanceService implements WebSocketHandler {
 	    					sendUpdatedTaskList(session);
 //	    					System.out.println(change.getTask() + " added || updated");
 	    				}));
-
 	    	case GETALL:
 	    		return client.getMap("*").readAllMap()
 	    				.then(Mono.fromRunnable(() -> {
 	    					sendUpdatedTaskList(session);
 //	    					System.out.println("Get all tasks in all locations");
 	    				}));
-	    		// may deal with this on front end
 	    	case GETLOCATION:
+	    		// unused
+	    		System.out.println(location);
 	    		return client.getMap(location).readAllMap()
 	    				.then(Mono.fromRunnable(() -> {
-	    					sendUpdatedTaskList(session);
+	    					sendUpdatedTaskListFromLocation(session, location);
 //	    					System.out.println("Get all tasks in " + location);
 	    				}));
 	    		
 	    	default:
-	    		return Mono.error(new InvalidModifierException("Value change type not properly specified:  aceeptable values: 'delete' or 'addorupdate'"));
+	    		return Mono.error(new InvalidModifierException("Value change type not properly specified:  acceptable values: 'delete' or 'addorupdate'"));
 	    	}
 	}
 
@@ -169,5 +169,25 @@ public class MaintenanceService implements WebSocketHandler {
 		}
 	}
 	
+	
+	private void sendUpdatedTaskListFromLocation(WebSocketSession session, String location) {
+		
+			List<Location> locations = tasks.values().stream().map(t -> t.getLocation()).toList();
+			
+			if (locations.stream().map(l -> l.toString().trim().equalsIgnoreCase(location)).findAny().isEmpty()) {
+				session.send(Flux.just(session.textMessage("No location matches " + location)))
+		    	.subscribe();
+				return;
+			}
+		
+	    List<Task> updatedTasks = new ArrayList<>(tasks.values()).stream().filter(t -> t.compareLocation(location)).toList();
+	    try {
+	    	session.send(Flux.just(session.textMessage(new ObjectMapper().writeValueAsString(updatedTasks))))
+	    	.subscribe();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			session.send(Mono.error(e));
+		}
+	}
 	
 }

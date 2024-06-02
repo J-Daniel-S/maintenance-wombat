@@ -1,0 +1,5 @@
+
+}
+java:S6813"BRemove this field injection and use constructor injection instead.8Ø ™ı1b 0132ec8cee01c5dd244e1a60fe6448a1h
+”
+java:S3305"YInject this field value directly into "userHandlerMapping", the only method that uses it.8Ø ™ı1b 98464cccd69be16b2a5a2fe79e0bd0d8h

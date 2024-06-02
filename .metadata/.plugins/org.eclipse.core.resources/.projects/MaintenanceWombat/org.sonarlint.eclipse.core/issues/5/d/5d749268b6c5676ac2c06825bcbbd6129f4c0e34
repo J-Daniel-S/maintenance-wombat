@@ -1,5 +1,5 @@
 
 v
 java:S6813"BRemove this field injection and use constructor injection instead.b 0132ec8cee01c5dd244e1a60fe6448a1h
-‰
-java:S3305"UInject this field value directly into "handlerMapping", the only method that uses it.b 073f47626dc010a5e40194c86aeb3eb3h
+”
+java:S3305"`Inject this field value directly into "maintenanceHandlerMapping", the only method that uses it.b 073f47626dc010a5e40194c86aeb3eb3h

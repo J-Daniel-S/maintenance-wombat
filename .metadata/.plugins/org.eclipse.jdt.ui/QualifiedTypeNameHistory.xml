@@ -5,7 +5,6 @@
     <fullyQualifiedTypeName name="java.util.Objects"/>
     <fullyQualifiedTypeName name="org.redisson.config.Config"/>
     <fullyQualifiedTypeName name="org.redisson.Redisson"/>
-    <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.Task"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.ChangeType"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonInclude"/>
@@ -17,4 +16,12 @@
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Priority"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Category"/>
     <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.Location"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.branches.UserType"/>
+    <fullyQualifiedTypeName name="reactor.core.publisher.Flux"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.core.JsonProcessingException"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="the.best.maintenancewombat.documents.User"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <fullyQualifiedTypeName name="reactor.core.publisher.Mono"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
 </qualifiedTypeNameHistroy>

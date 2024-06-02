@@ -73,6 +73,10 @@ public class Task {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+	
+	public boolean compareLocation(String location) {
+		return this.location.toString().trim().equalsIgnoreCase(location.trim());
+	}
 
 	@Override
 	public String toString() {

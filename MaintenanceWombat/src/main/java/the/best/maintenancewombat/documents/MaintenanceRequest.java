@@ -1,19 +1,22 @@
 package the.best.maintenancewombat.documents;
 
+import the.best.maintenancewombat.documents.branches.Location;
 import the.best.maintenancewombat.documents.branches.RequestType;
 
 public class MaintenanceRequest {
 	
 	Task task;
+	Location location;
 	RequestType type;
 	
 	public MaintenanceRequest() {
 		
 	}
 	
-	public MaintenanceRequest(Task task, RequestType type) {
+	public MaintenanceRequest(Task task, RequestType type, Location location) {
 		this.task = task;
 		this.type = type;
+		this.location = location;
 	}
 
 	public Task getTask() {
@@ -30,6 +33,14 @@ public class MaintenanceRequest {
 
 	public void setType(RequestType type) {
 		this.type = type;
+	}
+	
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	@Override

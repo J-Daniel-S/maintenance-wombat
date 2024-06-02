@@ -1,0 +1,135 @@
+package the.best.maintenancewombat.services;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.redisson.api.RedissonReactiveClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.socket.WebSocketHandler;
+import org.springframework.web.reactive.socket.WebSocketMessage;
+import org.springframework.web.reactive.socket.WebSocketSession;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.annotation.PostConstruct;
+import reactor.core.publisher.Mono;
+import the.best.maintenancewombat.documents.User;
+import the.best.maintenancewombat.documents.UserResponse;
+import the.best.maintenancewombat.documents.branches.UserType;
+
+@Service
+public class UserService implements WebSocketHandler {
+
+	private final ObjectMapper mapper;
+	private Map<String, User> users = new ConcurrentHashMap<>();
+	private static final String USER_MAP = "users";
+	
+	public UserService(@Autowired ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	@Autowired
+	private RedissonReactiveClient client;
+
+	@PostConstruct
+	public void initUserHash() {
+		User user1 = new User("KEVIN");
+		User user2 = new User("TIMMY", "default", UserType.MAINTENANCE);
+
+		client.getMap(USER_MAP)
+			.fastPut(user1.getName(), user1)
+			.then(Mono.fromRunnable(() -> {
+				users.put(user1.getName(), user1);
+			})).subscribe();
+		client.getMap("users")
+			.fastPut(user2.getName(), user2)
+			.then(Mono.fromRunnable(() -> {
+				users.put(user2.getName(), user2);
+			})).subscribe();
+
+	}
+
+	@Override
+	public Mono<Void> handle(WebSocketSession session) {
+		
+		return session.receive()
+				.map(WebSocketMessage::getPayloadAsText)
+				.flatMap(msg -> {
+					User user;
+					try {
+						user = mapper.readValue(msg, User.class);
+						return client.getMap(USER_MAP).get(user.getName().toUpperCase())
+//								.doOnNext(found -> System.out.println("Found value: " + found))
+//								.doOnTerminate(() -> System.out.println("no user emitted from Mono"))
+							.flatMapMany(found -> {
+								try {
+									return session.send(Mono.just(
+											session.textMessage(
+													new ObjectMapper().writeValueAsString(new UserResponse((User) found)))));
+									} catch (Exception  e) {
+										e.printStackTrace();
+										return Mono.error(e);
+									}
+								})
+							.switchIfEmpty(notFound -> {
+								System.out.println(notFound.toString());
+							});
+					} catch (JsonMappingException e) {
+						e.printStackTrace();
+						return session.send(Mono.error(e));
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+						return session.send(Mono.error(e));
+					}
+				})
+	            .doOnError(System.out::println)
+	            .doFinally(s -> System.out.println("Subscriber finally " + s))
+	            .then();
+		
+	}
+
+	public Mono<Void> jabroni(WebSocketSession session) {
+		
+		return session.receive()
+				.map(WebSocketMessage::getPayloadAsText)
+				.flatMap(msg -> {
+					User user;
+					try {
+						user = mapper.readValue(msg, User.class);
+						return client.getMap(USER_MAP).get(user.getName().toUpperCase())
+//								.doOnNext(found -> System.out.println("Found value: " + found))
+//								.doOnTerminate(() -> System.out.println("no user emitted from Mono"))
+							.flatMapMany(found -> {
+								try {
+									return session.send(Mono.just(
+											session.textMessage(
+													new ObjectMapper().writeValueAsString(new UserResponse((User) found)))));
+									} catch (Exception  e) {
+										e.printStackTrace();
+										return Mono.error(e);
+									}
+								})
+							.switchIfEmpty(notFound -> {
+								System.out.println(notFound.toString());
+							});
+					} catch (JsonMappingException e) {
+						e.printStackTrace();
+						return session.send(Mono.error(e));
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+						return session.send(Mono.error(e));
+					}
+				})
+	            .doOnError(System.out::println)
+	            .doFinally(s -> System.out.println("Subscriber finally " + s))
+	            .then();
+		
+	}
+	
+
+	
+
+}
