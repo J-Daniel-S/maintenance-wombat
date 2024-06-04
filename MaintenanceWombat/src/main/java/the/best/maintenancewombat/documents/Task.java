@@ -3,32 +3,26 @@ package the.best.maintenancewombat.documents;
 import the.best.maintenancewombat.documents.branches.Category;
 import the.best.maintenancewombat.documents.branches.Location;
 import the.best.maintenancewombat.documents.branches.Priority;
+import the.best.maintenancewombat.services.MaintenanceService;
 
 public class Task {
 	
+	long id;
 	String name;
 	Priority prio;
 	Location location;
 	Category kind;
 	
 	public Task() {
-		this.prio = Priority.LOW;
-		this.kind = Category.OTHER;
-		this.location = Location.SAN_ANTONIO;
-	}
-	
-	public Task(String name) {
-		this.name = name;
-		this.prio = Priority.LOW;
-		this.kind = Category.OTHER;
-		this.location = Location.SAN_ANTONIO;
+		this.id = MaintenanceService.generateId();
+		
 	}
 	
 	public Task(String name, Priority prio, Location location) {
 		this.name = name;
 		this.prio = prio;
-		this.kind = Category.OTHER;
 		this.location = location;
+		this.id = MaintenanceService.generateId();
 	}
 
 	public Task(String name, Priority prio, Category kind, Location location) {
@@ -36,6 +30,12 @@ public class Task {
 		this.prio = prio;
 		this.kind = kind;
 		this.location = location;
+		this.id = MaintenanceService.generateId();
+	}
+	
+	public Task(String name) {
+		this.name = name;
+		this.id = MaintenanceService.generateId();
 	}
 	
 	public String getName() {
@@ -44,6 +44,10 @@ public class Task {
 		} else {
 			return "unnamed";
 		}
+	}
+	
+	public long getId() {
+		return id;
 	}
 
 	public void setName(String name) {
@@ -80,7 +84,8 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [name=" + name + ", prio=" + prio + ", location=" + location + ", kind=" + kind + "]";
+		return "Task [id=" + id + ", name=" + name + ", prio=" + prio + ", location=" + location + ", kind=" + kind
+				+ "]";
 	}
 
 }

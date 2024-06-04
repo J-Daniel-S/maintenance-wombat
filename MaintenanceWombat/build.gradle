@@ -8,7 +8,7 @@ group = 'the.best'
 version = '0.0.1'
 
 bootBuildImage {
-	imageName = "jsharper55/maintenance-wombat:1.0.1"
+	imageName = "jsharper55/maintenance-wombat:0.0.1"
 }
 
 java {

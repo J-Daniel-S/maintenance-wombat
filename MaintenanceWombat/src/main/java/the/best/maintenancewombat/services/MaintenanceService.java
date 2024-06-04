@@ -3,9 +3,10 @@ package the.best.maintenancewombat.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
+import org.redisson.api.RMapReactive;
 import org.redisson.api.RedissonReactiveClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class MaintenanceService implements WebSocketHandler {
 	
 	private final ObjectMapper mapper;
     private Map<String, Task> tasks = new ConcurrentHashMap<>();
+    private static final AtomicLong idGenerator = new AtomicLong();
 	
 	@Autowired
 	private RedissonReactiveClient client;
@@ -48,6 +50,9 @@ public class MaintenanceService implements WebSocketHandler {
 		Task task4 = new Task("Install new network switch", Priority.HIGH, Category.IT, Location.FORT_WORTH);
 		Task task5 = new Task("Paint office walls", Priority.MEDIUM, Category.STRUCTURAL, Location.LUBBOCK);
 		Task task6 = new Task("Clean oil spill", Priority.HIGH, Category.CLEANUP, Location.SAN_ANTONIO);
+		Task task7 = new Task("Add new computers to network", Priority.MEDIUM, Category.IT, Location.SAN_ANTONIO);
+		Task task8 = new Task("Install new coffee maker", Priority.LOW, Category.OTHER, Location.ABILENE);
+		Task task9 = new Task("Repair broken drywall in 3rd floor conference room", Priority.MEDIUM, Category.STRUCTURAL, Location.MCALLEN);
 		
 		try {
 			client.getMap("ABILENE")
@@ -85,6 +90,24 @@ public class MaintenanceService implements WebSocketHandler {
 					tasks.put(task6.getName(), task6);
 				}))
 				.subscribe();
+			client.getMap("SAN_ANTONIO")
+				.fastPut(task7.getName(), mapper.writeValueAsString(task7))
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task7.getName(), task7);
+				}))
+				.subscribe();
+			client.getMap("ABILENE")
+				.fastPut(task8.getName(), mapper.writeValueAsString(task8))
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task8.getName(), task8);
+				}))
+				.subscribe();
+			client.getMap("MCALLEN")
+				.fastPut(task9.getName(), mapper.writeValueAsString(task9))
+				.then(Mono.fromRunnable(() -> {
+					tasks.put(task9.getName(), task9);
+				}))
+				.subscribe();
 		
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
@@ -98,9 +121,11 @@ public class MaintenanceService implements WebSocketHandler {
 		return session.receive()
 			.map(WebSocketMessage::getPayloadAsText)
 			.flatMap(msg -> {
+				System.out.println("1:\n" + msg);
 				MaintenanceRequest change;
 				try {
 					change = mapper.readValue(msg, MaintenanceRequest.class);
+					System.out.println("2:" + change);
 					return handleTaskChange(change, session)
 							.then(session.send(Flux.just(session.textMessage(msg))));
 				} catch (JsonProcessingException e) {
@@ -114,43 +139,46 @@ public class MaintenanceService implements WebSocketHandler {
 		
 	}
 	
-	private Mono<Void> handleTaskChange(MaintenanceRequest type, WebSocketSession session) throws JsonProcessingException {
-		
-		//probably better to do a null check here...  currently will get an empty task from the front end
-		
-	    String taskKey = type.getTask().getName();
-	    String location = type.getLocation().toString();
+	private Mono<Void> handleTaskChange(MaintenanceRequest request, WebSocketSession session) throws JsonProcessingException {
+	    String taskKey = String.valueOf(request.getTask().getId());
+	    String location = request.getTask().getLocation().toString();
 	    
-	    	switch (type.getType()) {
+	    	switch (request.getType()) {
 	    	case DELETE:
 	    		return client.getMap(location)
 	    				.remove(taskKey)
 	    				.then(Mono.fromRunnable(() -> {
 	    					tasks.remove(taskKey);
 	    					sendUpdatedTaskList(session);
-//	    					System.out.println(change.getTask() + " deleted");
 	    				}));
 	    	case ADDORUPDATE:
+	    		List<String> taskNames = new ArrayList<>();
+	    		tasks.forEach((id, t) -> {
+	    			if (t.getLocation().toString().equalsIgnoreCase(location)) {
+	    				taskNames.add(t.getName());
+	    			}
+	    		});
+	    		
+	    		if (taskNames.contains(request.getTask().getName())) {
+	    			return 	session.send(Flux.just(session.textMessage("Task already exists for " + location)))
+	    			    	.then();
+	    		} 
+	    		
 	    		return client.getMap(location)
-	    				.put(taskKey, new ObjectMapper().writeValueAsString(type.getTask()))
+	    				.put(taskKey, new ObjectMapper().writeValueAsString(request.getTask()))
 	    				.then(Mono.fromRunnable(() -> {
-	    					tasks.put(taskKey, type.getTask());
+	    					tasks.put(taskKey, request.getTask());
 	    					sendUpdatedTaskList(session);
-//	    					System.out.println(change.getTask() + " added || updated");
 	    				}));
 	    	case GETALL:
 	    		return client.getMap("*").readAllMap()
 	    				.then(Mono.fromRunnable(() -> {
 	    					sendUpdatedTaskList(session);
-//	    					System.out.println("Get all tasks in all locations");
 	    				}));
 	    	case GETLOCATION:
-	    		// unused
-	    		System.out.println(location);
 	    		return client.getMap(location).readAllMap()
 	    				.then(Mono.fromRunnable(() -> {
 	    					sendUpdatedTaskListFromLocation(session, location);
-//	    					System.out.println("Get all tasks in " + location);
 	    				}));
 	    		
 	    	default:
@@ -188,6 +216,10 @@ public class MaintenanceService implements WebSocketHandler {
 			e.printStackTrace();
 			session.send(Mono.error(e));
 		}
+	}
+	
+	public static long generateId() {
+		return idGenerator.incrementAndGet();
 	}
 	
 }
