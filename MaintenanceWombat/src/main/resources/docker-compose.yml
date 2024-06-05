@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  maintenance-wombat:
+    container_name: wombat_prime
+    image: jsharper55/maintenance-wombat:0.0.1
+    mem_limit: 700m
+    ports:
+        - 8080:8080
+    environment:
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    networks:
+        - wombat
+    depends_on:
+        - redis
+        
+  redis:
+    container_name: redis
+    image: redis:6.2
+    mem_limit: 700m
+    ports:
+        - 6379:6379
+    networks:
+        - wombat
+
+networks:
+    wombat:
