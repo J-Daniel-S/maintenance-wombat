@@ -126,8 +126,7 @@ public class MaintenanceService implements WebSocketHandler {
 				try {
 					change = mapper.readValue(msg, MaintenanceRequest.class);
 					System.out.println("2:" + change);
-					return handleTaskChange(change, session)
-							.then(session.send(Flux.just(session.textMessage(msg))));
+					return handleTaskChange(change, session);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 					return Mono.error(e);
