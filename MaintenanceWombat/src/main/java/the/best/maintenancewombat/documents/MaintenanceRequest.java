@@ -6,6 +6,7 @@ public class MaintenanceRequest {
 	
 	Task task;
 	RequestType type;
+	User maintenanceUser, requestingUser;
 	
 	public MaintenanceRequest() {
 		
@@ -14,6 +15,34 @@ public class MaintenanceRequest {
 	public MaintenanceRequest(Task task, RequestType type) {
 		this.task = task;
 		this.type = type;
+	}
+	
+	public MaintenanceRequest(Task task, RequestType type, User maintUser) {
+		this.task = task;
+		this.type = type;
+		this.maintenanceUser = maintUser;
+	}
+	
+	public MaintenanceRequest(User reqUser, Task task, RequestType type) {
+		this.task = task;
+		this.type = type;
+		this.requestingUser = reqUser;
+	}
+	
+	public User getMaintenanceUser() {
+		return maintenanceUser;
+	}
+
+	public void setMaintenanceUser(User maintenanceUser) {
+		this.maintenanceUser = maintenanceUser;
+	}
+
+	public User getRequestingUser() {
+		return requestingUser;
+	}
+
+	public void setRequestingUser(User requestingUser) {
+		this.requestingUser = requestingUser;
 	}
 
 	public Task getTask() {
@@ -31,11 +60,13 @@ public class MaintenanceRequest {
 	public void setType(RequestType type) {
 		this.type = type;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Change [task=" + task + ", type=" + type + "]";
+		return "MaintenanceRequest [task=" + task + ", type=" + type + ", maintenanceUser=" + maintenanceUser
+				+ ", requestingUser=" + requestingUser + "]";
 	}
+	
 	
 
 }

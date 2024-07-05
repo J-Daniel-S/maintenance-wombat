@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.redisson.api.RMapReactive;
 import org.redisson.api.RedissonReactiveClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,7 @@ import the.best.maintenancewombat.documents.Task;
 import the.best.maintenancewombat.documents.branches.Category;
 import the.best.maintenancewombat.documents.branches.Location;
 import the.best.maintenancewombat.documents.branches.Priority;
+import the.best.maintenancewombat.documents.branches.RequestType;
 import the.best.maintenancewombat.services.utils.InvalidModifierException;
 
 @Service
@@ -56,56 +56,56 @@ public class MaintenanceService implements WebSocketHandler {
 		
 		try {
 			client.getMap("ABILENE")
-				.fastPut(task1.getName(), task1)
+				.fastPut(task1.getId(), task1)
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task1.getName(), task1);
+					tasks.put(String.valueOf(task1.getId()), task1);
 				})).subscribe();
 			client.getMap("SUGARLAND")
-				.fastPut(task2.getName(), mapper.writeValueAsString(task2))
+				.fastPut(task2.getId(), mapper.writeValueAsString(task2))
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task2.getName(), task2);
+					tasks.put(String.valueOf(task2.getId()), task2);
 				}))
 				.subscribe();
 			client.getMap("MCALLEN")
-				.put(task3.getName(), task3)
+				.put(task3.getId(), task3)
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task3.getName(), task3);
+					tasks.put(String.valueOf(task3.getId()), task3);
 				}))
 				.subscribe();
 			client.getMap("FORT_WORTH")
-				.fastPut(task4.getName(), task4)
+				.fastPut(task4.getId(), task4)
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task4.getName(), task4);
+					tasks.put(String.valueOf(task4.getId()), task4);
 				}))
 				.subscribe();
 			client.getMap("LUBBOCK")
-				.fastPut(task5.getName(), task5)
+				.fastPut(task5.getId(), task5)
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task5.getName(), task5);
+					tasks.put(String.valueOf(task5.getId()), task5);
 				}))
 				.subscribe();
 			client.getMap("SAN_ANTONIO")
-				.fastPut(task6.getName(), mapper.writeValueAsString(task6))
+				.fastPut(task6.getId(), mapper.writeValueAsString(task6))
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task6.getName(), task6);
+					tasks.put(String.valueOf(task6.getId()), task6);
 				}))
 				.subscribe();
 			client.getMap("SAN_ANTONIO")
-				.fastPut(task7.getName(), mapper.writeValueAsString(task7))
+				.fastPut(task7.getId(), mapper.writeValueAsString(task7))
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task7.getName(), task7);
+					tasks.put(String.valueOf(task7.getId()), task7);
 				}))
 				.subscribe();
 			client.getMap("ABILENE")
-				.fastPut(task8.getName(), mapper.writeValueAsString(task8))
+				.fastPut(task8.getId(), mapper.writeValueAsString(task8))
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task8.getName(), task8);
+					tasks.put(String.valueOf(task8.getId()), task8);
 				}))
 				.subscribe();
 			client.getMap("MCALLEN")
-				.fastPut(task9.getName(), mapper.writeValueAsString(task9))
+				.fastPut(task9.getId(), mapper.writeValueAsString(task9))
 				.then(Mono.fromRunnable(() -> {
-					tasks.put(task9.getName(), task9);
+					tasks.put(String.valueOf(task9.getId()), task9);
 				}))
 				.subscribe();
 		
@@ -117,15 +117,18 @@ public class MaintenanceService implements WebSocketHandler {
 
 	@Override
 	public Mono<Void> handle(WebSocketSession session) {
-		
+		System.out.println("handle executes");
 		return session.receive()
 			.map(WebSocketMessage::getPayloadAsText)
 			.flatMap(msg -> {
-				System.out.println("1:\n" + msg);
 				MaintenanceRequest change;
 				try {
 					change = mapper.readValue(msg, MaintenanceRequest.class);
-					System.out.println("2:" + change);
+					if (change.getType() == RequestType.DELETE) {
+						System.out.println("REQUEST RECEIVED - " + change + "\nFROM - " + change.getMaintenanceUser().getName());
+					} else if (change.getType() == RequestType.ADDORUPDATE) {
+						System.out.println("REQUEST RECEIVED - " + change + "\nFROM - " + change.getRequestingUser().getName());
+					}
 					return handleTaskChange(change, session);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
