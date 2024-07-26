@@ -117,7 +117,6 @@ public class MaintenanceService implements WebSocketHandler {
 
 	@Override
 	public Mono<Void> handle(WebSocketSession session) {
-		System.out.println("handle executes");
 		return session.receive()
 			.map(WebSocketMessage::getPayloadAsText)
 			.flatMap(msg -> {
