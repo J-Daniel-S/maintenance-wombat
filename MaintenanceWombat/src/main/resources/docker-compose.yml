@@ -5,6 +5,7 @@ services:
     container_name: wombat_prime
     image: jsharper55/maintenance-wombat:0.0.1
     mem_limit: 700m
+    restart: always
     ports:
         - 8080:8080
     environment:
@@ -13,7 +14,9 @@ services:
     networks:
         - wombat
     depends_on:
-        - redis
+        redis:
+          condition: service_healthy
+          restart: true
         
   redis:
     container_name: redis
@@ -23,6 +26,23 @@ services:
         - 6379:6379
     networks:
         - wombat
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3m
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+        
+  maintenance-wombat-gui:
+    container_name: wombat_gui
+    image: jsharper55/maintenance-wombat-gui:0.0.1
+    mem_limit: 700m
+    ports:
+        - 3000:3000
+    networks:
+        - wombat
+    depends_on:
+        - maintenance-wombat
 
 networks:
     wombat:
